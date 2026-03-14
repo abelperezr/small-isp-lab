@@ -1,6 +1,7 @@
 # Small ISP Lab
 
 End-to-end ISP lab built on Containerlab with **Nokia SROS (SRSIM)**, **Nokia SR Linux**, auxiliary Linux containers, and operational documentation in **Docusaurus (ES/EN)**.
+Documentation: https://abelperezr.github.io/small-isp-lab/docs/
 
 This project is designed to validate and demonstrate a realistic access and ISP edge environment with:
 
