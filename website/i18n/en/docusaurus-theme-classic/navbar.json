@@ -39,9 +39,9 @@
     "message": "ATP",
     "description": "Navbar item with label ATP"
   },
-  "item.label.Deploy": {
+  "item.label.Despliegue": {
     "message": "Deploy",
-    "description": "Navbar item with label Deploy"
+    "description": "Navbar item with label Despliegue"
   },
   "item.label.Vista General": {
     "message": "Overview",

@@ -253,7 +253,7 @@ const config = {
           },
           {
             type: 'dropdown',
-            label: 'Deploy',
+            label: 'Despliegue',
             position: 'left',
             items: [
               { to: '/docs/despliegue/instalacion/', label: 'Instalación' },

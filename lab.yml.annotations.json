@@ -1,0 +1,342 @@
+{
+  "freeTextAnnotations": [
+    {
+      "id": "freeText_1773369151637",
+      "text": "BNGs",
+      "position": {
+        "x": 858.0139365330016,
+        "y": 216.09101088698125
+      },
+      "fontSize": 14,
+      "fontColor": "#abb2bf",
+      "fontWeight": "normal",
+      "fontStyle": "normal",
+      "textDecoration": "none",
+      "textAlign": "left",
+      "fontFamily": "Arial"
+    },
+    {
+      "id": "freeText_1773369193653",
+      "text": "CARRIERS",
+      "position": {
+        "x": 642.0175008579406,
+        "y": -13.923501072485617
+      },
+      "fontSize": 14,
+      "fontColor": "#abb2bf",
+      "fontWeight": "normal",
+      "fontStyle": "normal",
+      "textDecoration": "none",
+      "textAlign": "left",
+      "fontFamily": "Arial"
+    },
+    {
+      "id": "freeText_1773369642990",
+      "text": "Telemetry Stack",
+      "position": {
+        "x": 903.3849557522124,
+        "y": 245.35398230088498
+      },
+      "fontSize": 14,
+      "fontColor": "#abb2bf",
+      "fontWeight": "normal",
+      "fontStyle": "normal",
+      "textDecoration": "none",
+      "textAlign": "left",
+      "fontFamily": "Arial"
+    },
+    {
+      "id": "freeText_1773369657961",
+      "text": "Logging Stack",
+      "position": {
+        "x": 1034.1150442477876,
+        "y": 245.08849557522126
+      },
+      "fontSize": 14,
+      "fontColor": "#abb2bf",
+      "fontWeight": "normal",
+      "fontStyle": "normal",
+      "textDecoration": "none",
+      "textAlign": "left",
+      "fontFamily": "Arial"
+    },
+    {
+      "id": "freeText_1773369881378",
+      "text": "ACCESS",
+      "position": {
+        "x": 836.0127476895259,
+        "y": 266.2434391638524
+      },
+      "fontSize": 14,
+      "fontColor": "#abb2bf",
+      "fontWeight": "normal",
+      "fontStyle": "normal",
+      "textDecoration": "none",
+      "textAlign": "left",
+      "fontFamily": "Arial"
+    }
+  ],
+  "freeShapeAnnotations": [
+    {
+      "id": "freeShape_1773369052585",
+      "shapeType": "rectangle",
+      "position": {
+        "x": 481.92477876106216,
+        "y": -21.172566371681437
+      },
+      "width": 406,
+      "height": 100,
+      "fillColor": "#c14949",
+      "fillOpacity": 0.2,
+      "borderColor": "#abb2bf",
+      "borderWidth": 1,
+      "borderStyle": "solid",
+      "rotation": 0,
+      "zIndex": -1
+    },
+    {
+      "id": "freeShape_1773369097800",
+      "shapeType": "rectangle",
+      "position": {
+        "x": 461.1504424778761,
+        "y": 156.46017699115046
+      },
+      "width": 453,
+      "height": 100,
+      "fillColor": "#5149c1",
+      "fillOpacity": 0.2,
+      "borderColor": "#abb2bf",
+      "borderWidth": 1,
+      "borderStyle": "solid",
+      "rotation": 0,
+      "zIndex": -1
+    },
+    {
+      "id": "freeShape_1773369542070",
+      "shapeType": "rectangle",
+      "position": {
+        "x": 1015.0221238938054,
+        "y": 151.88053097345144
+      },
+      "width": 91,
+      "height": 100,
+      "fillColor": "#49b3c1",
+      "fillOpacity": 0.2,
+      "borderColor": "#abb2bf",
+      "borderWidth": 1,
+      "borderStyle": "solid",
+      "rotation": 0,
+      "zIndex": -1
+    },
+    {
+      "id": "freeShape_1773369563802",
+      "shapeType": "rectangle",
+      "position": {
+        "x": 941.3008849557525,
+        "y": 151.88053097345144
+      },
+      "width": 86,
+      "height": 100,
+      "fillColor": "#adc149",
+      "fillOpacity": 0.2,
+      "borderColor": "#abb2bf",
+      "borderWidth": 1,
+      "borderStyle": "solid",
+      "rotation": 0,
+      "zIndex": -1
+    },
+    {
+      "id": "freeShape_1773369840528",
+      "shapeType": "rectangle",
+      "position": {
+        "x": 465.61946902654864,
+        "y": 277.6327433628319
+      },
+      "width": 443,
+      "height": 199,
+      "fillColor": "#49c15d",
+      "fillOpacity": 0.2,
+      "borderColor": "#abb2bf",
+      "borderWidth": 1,
+      "borderStyle": "solid",
+      "rotation": 0,
+      "zIndex": -1
+    }
+  ],
+  "trafficRateAnnotations": [
+    {
+      "id": "traffic-rate-1",
+      "position": {
+        "x": 413.11018505359004,
+        "y": 265.50656956186623
+      },
+      "nodeId": "bngmaster",
+      "interfaceName": "1/1/c1/1",
+      "mode": "chart",
+      "textMetric": "combined",
+      "backgroundOpacity": 20,
+      "borderWidth": 1,
+      "borderRadius": 8,
+      "width": 180,
+      "height": 120
+    }
+  ],
+  "groupStyleAnnotations": [],
+  "networkNodeAnnotations": [],
+  "nodeAnnotations": [
+    {
+      "id": "carrier1",
+      "interfacePattern": "e1-{n}",
+      "position": {
+        "x": 500,
+        "y": 0
+      },
+      "icon": "switch"
+    },
+    {
+      "id": "carrier2",
+      "interfacePattern": "e1-{n}",
+      "position": {
+        "x": 820,
+        "y": 0
+      },
+      "icon": "switch"
+    },
+    {
+      "id": "bngmaster",
+      "interfacePattern": "1/1/c{n}/1",
+      "position": {
+        "x": 500,
+        "y": 180
+      }
+    },
+    {
+      "id": "bngslave",
+      "interfacePattern": "1/1/c{n}/1",
+      "position": {
+        "x": 820,
+        "y": 180
+      }
+    },
+    {
+      "id": "olt",
+      "interfacePattern": "e1-{n}",
+      "position": {
+        "x": 660,
+        "y": 300
+      },
+      "icon": "pon",
+      "labelPosition": "top",
+      "labelBackgroundColor": "transparent"
+    },
+    {
+      "id": "ont1",
+      "position": {
+        "x": 780,
+        "y": 400
+      },
+      "icon": "rgw"
+    },
+    {
+      "id": "ont2",
+      "position": {
+        "x": 540,
+        "y": 400
+      },
+      "icon": "rgw"
+    },
+    {
+      "id": "pc1",
+      "position": {
+        "x": 940,
+        "y": 400
+      },
+      "icon": "client"
+    },
+    {
+      "id": "radius",
+      "position": {
+        "x": 1000,
+        "y": 280
+      },
+      "icon": "server"
+    },
+    {
+      "id": "gnmic",
+      "position": {
+        "x": 960,
+        "y": 160
+      },
+      "icon": "server",
+      "labelPosition": "top"
+    },
+    {
+      "id": "prometheus",
+      "position": {
+        "x": 960,
+        "y": 200
+      },
+      "icon": "server"
+    },
+    {
+      "id": "grafana",
+      "position": {
+        "x": 1000,
+        "y": 180
+      },
+      "icon": "server"
+    },
+    {
+      "id": "lig",
+      "position": {
+        "x": 900,
+        "y": 80
+      },
+      "icon": "server"
+    },
+    {
+      "id": "loki",
+      "position": {
+        "x": 1040,
+        "y": 160
+      },
+      "icon": "server",
+      "labelPosition": "top"
+    },
+    {
+      "id": "alloy",
+      "position": {
+        "x": 1040,
+        "y": 200
+      },
+      "icon": "server"
+    },
+    {
+      "id": "internet",
+      "position": {
+        "x": 660,
+        "y": -100
+      },
+      "icon": "cloud"
+    },
+    {
+      "id": "dns",
+      "position": {
+        "x": 420,
+        "y": 80
+      },
+      "icon": "server"
+    },
+    {
+      "id": "containerbot",
+      "position": {
+        "x": 1000,
+        "y": 80
+      },
+      "icon": "controller"
+    }
+  ],
+  "edgeAnnotations": [],
+  "aliasEndpointAnnotations": [],
+  "viewerSettings": {}
+}
