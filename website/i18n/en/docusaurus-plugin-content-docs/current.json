@@ -27,6 +27,10 @@
     "message": "🤖 Containerbot",
     "description": "The label for category '🤖 Containerbot' in sidebar 'tutorialSidebar'"
   },
+  "sidebar.tutorialSidebar.category.🛠️ Operación": {
+    "message": "🛠️ Operations",
+    "description": "The label for category '🛠️ Operación' in sidebar 'tutorialSidebar'"
+  },
   "sidebar.tutorialSidebar.category.🧪 ATP": {
     "message": "🧪 ATP",
     "description": "The label for category '🧪 ATP' in sidebar 'tutorialSidebar'"
