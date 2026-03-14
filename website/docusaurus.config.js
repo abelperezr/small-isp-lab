@@ -177,7 +177,7 @@ const config = {
           },
           {
             type: 'dropdown',
-            label: 'Operations',
+            label: 'Operaciones',
             position: 'left',
             items: [
               { to: '/docs/operacion/runbook/', label: 'Vista General' },

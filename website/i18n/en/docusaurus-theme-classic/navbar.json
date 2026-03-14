@@ -135,9 +135,9 @@
     "message": "Telegram",
     "description": "Navbar item with label Telegram"
   },
-  "item.label.Operación": {
+  "item.label.Operaciones": {
     "message": "Operations",
-    "description": "Navbar item with label Operación"
+    "description": "Navbar item with label Operaciones"
   },
   "item.label.BNG Baseline": {
     "message": "BNG Baseline",
