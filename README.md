@@ -159,8 +159,8 @@ http://localhost:3000/small-isp-lab/docs/
 
 ## Operational Notes
 
-- `configs/cbot/secrets.env` is local-only and should not be committed; use `configs/cbot/secrets.env.example` as the template
-- `lab.yml.annotations.json` may be kept locally if you want to preserve visual annotations for the lab
+- `configs/cbot/secrets.env` for integration with Telegram; use `configs/cbot/secrets.env.example` as the template
+- `lab.yml.annotations.json` for Containerlab vscode extension
 - Enjoy!
 
 ## License
