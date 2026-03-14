@@ -159,8 +159,8 @@ http://localhost:3000/small-isp-lab/docs/
 
 ## Operational Notes
 
-- `configs/cbot/secrets.env` for integration with Telegram; use `configs/cbot/secrets.env.example` as the template
-- `lab.yml.annotations.json` for Containerlab vscode extension
+- `configs/cbot/secrets.env` for Telegram integration; use `configs/cbot/secrets.env.example` as the template
+- `lab.yml.annotations.json` for Containerlab VS code extension
 - Enjoy!
 
 ## License
