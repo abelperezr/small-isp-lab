@@ -24,8 +24,8 @@ This project is designed to validate and demonstrate a realistic access and ISP 
 | OLT | `ghcr.io/nokia/srlinux:25.10` | `10.99.1.4` |
 | Carrier 1 | `ghcr.io/nokia/srlinux:25.10` | `10.99.1.252` |
 | Carrier 2 | `ghcr.io/nokia/srlinux:25.10` | `10.99.1.253` |
-| ONT1 | `ghcr.io/abelperezr/ont-ds:0.4` | `10.99.1.5` |
-| ONT2 | `ghcr.io/abelperezr/ont-ds:0.4` | `10.99.1.6` |
+| ONT1 | `ghcr.io/abelperezr/ont-ds:0.3` | `10.99.1.5` |
+| ONT2 | `ghcr.io/abelperezr/ont-ds:0.3` | `10.99.1.6` |
 | RADIUS | `ghcr.io/abelperezr/freeradius-custom:0.1` | `10.99.1.8` |
 | gNMIc | `ghcr.io/openconfig/gnmic:latest` | `10.99.1.9` |
 | Prometheus | `prom/prometheus` | `10.99.1.10` |
