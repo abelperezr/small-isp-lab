@@ -1,0 +1,16 @@
+# =============================================================================
+# requirements.txt - Containerbot dependencies
+# =============================================================================
+
+python-telegram-bot>=20.7
+PyYAML>=6.0
+scrapli[paramiko]>=2024.1.30
+scrapli-community>=2024.1.30
+scrapli-netconf>=2024.1.30
+paramiko>=3.4
+pygnmi>=0.8
+pysros>=24.3.1
+aiohttp>=3.9
+requests>=2.31
+ncclient>=0.6.15
+

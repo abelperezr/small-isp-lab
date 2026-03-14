@@ -1,0 +1,53 @@
+[alias]
+"macsum {ni}" = "show network-instance {ni} bridge-table mac-table all"
+configure = "enter candidate"
+"show port" = "show interface all"
+"dis {int}" = "show interface {int} detail"
+
+[basic-prompt]
+value = "\n--{{ {banner}{startup_config_state}{modified_flags}{short_yang_models}{mode_and_session} }}--[ {pwc} ]--\n{short_redundancy}{hw_slot}:{aaa_user}@{host}# "
+
+[bottom-toolbar]
+value = "{banner}{startup_config_state}{commit_confirmed_with_remaining_time}|{time_24}"
+
+[cli-engine]
+type = "advanced"
+max-history-items = 1000
+history-filename = "~/.srlinux_history"
+completion-type = "smart"
+completion-ignore-case = false
+completion-display = "popup"
+vi-editing-mode = false
+refresh-interval = 5.0
+
+[enter-completion]
+enabled = false
+
+[key-completer-limit]
+limit = 100
+
+[network-instance]
+value = ""
+
+[output-display-format]
+value = "text"
+
+[output-modifier-alias]
+
+[pagination]
+value = ""
+
+[prompt]
+value = "\n\n--{{ {banner}{startup_config_state}{modified_flags}{short_yang_models}{mode_and_session} }}--[ {pwc} ]--\n{short_redundancy}{hw_slot}:{aaa_user}@{host}# "
+
+[session-idle-timeout]
+value = ""
+
+[space-completion]
+enabled = false
+
+[tab-completion]
+enabled = true
+
+[yang-models]
+value = "srl"

@@ -1,0 +1,132 @@
+logging {
+  level  = "info"
+  format = "logfmt"
+}
+
+loki.relabel "syslog" {
+  forward_to = [loki.process.classify.receiver]
+
+  rule {
+    action        = "replace"
+    source_labels = ["__syslog_message_hostname"]
+    target_label  = "hostname"
+  }
+
+  rule {
+    action        = "replace"
+    source_labels = ["__syslog_message_app_name"]
+    target_label  = "app_name"
+  }
+
+  rule {
+    action        = "replace"
+    source_labels = ["__syslog_message_app_name"]
+    target_label  = "message_type"
+  }
+
+  rule {
+    action        = "replace"
+    source_labels = ["__syslog_message_severity"]
+    target_label  = "severity"
+  }
+
+  rule {
+    action        = "replace"
+    source_labels = ["__syslog_message_facility"]
+    target_label  = "facility"
+  }
+
+  rule {
+    action        = "replace"
+    source_labels = ["__syslog_connection_ip_address"]
+    target_label  = "source_ip"
+  }
+
+  rule {
+    action        = "replace"
+    source_labels = ["__syslog_connection_hostname"]
+    target_label  = "connection_host"
+  }
+}
+
+loki.process "classify" {
+  forward_to = [loki.write.local.receiver]
+
+  stage.match {
+    selector = "{source_platform=\"srlinux\"}"
+
+    stage.regex {
+      expression = "^(?:<\\d+>1\\s+\\S+\\s+\\S+\\s+\\S+\\s+\\S+\\s+\\S+\\s+)?\\s*(?P<payload_level>[a-z]+)\\|[^|]+\\|[^|]+\\|[^|]+\\|(?P<payload_severity>[A-Z]):\\s+[A-Za-z0-9_.-]+\\s+(?P<message_type>[A-Za-z0-9_.:-]+)"
+    }
+
+    stage.labels {
+      values = {
+        payload_level    = "",
+        payload_severity = "",
+        message_type     = "",
+      }
+    }
+  }
+
+  stage.match {
+    selector = "{source_platform=\"sros\"}"
+
+    stage.regex {
+      expression = "^\\s*\\d+\\s+\\S+\\s+(?P<message_type>[A-Z]+-[A-Z]+-[A-Za-z0-9-]+)"
+    }
+
+    stage.labels {
+      values = {
+        message_type = "",
+      }
+    }
+  }
+
+  stage.labels {
+    values = {
+      detected_level = "",
+    }
+  }
+}
+
+loki.source.syslog "nokia" {
+  listener {
+    address                = "0.0.0.0:5514"
+    protocol               = "udp"
+    syslog_format          = "rfc3164"
+    use_incoming_timestamp = false
+    labels = {
+      job             = "nokia-syslog",
+      collector       = "alloy",
+      transport       = "udp",
+      source_platform = "sros",
+    }
+  }
+
+  listener {
+    address                = "0.0.0.0:1514"
+    protocol               = "udp"
+    syslog_format          = "rfc5424"
+    use_incoming_timestamp = true
+    use_rfc5424_message    = true
+    labels = {
+      job             = "nokia-syslog",
+      collector       = "alloy",
+      transport       = "udp",
+      source_platform = "srlinux",
+    }
+  }
+
+  relabel_rules = loki.relabel.syslog.rules
+  forward_to = [loki.process.classify.receiver]
+}
+
+loki.write "local" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+
+  external_labels = {
+    lab = "small-isp-lab",
+  }
+}

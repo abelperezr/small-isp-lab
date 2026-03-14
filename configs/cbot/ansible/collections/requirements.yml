@@ -1,0 +1,5 @@
+---
+collections:
+  - name: ansible.netcommon
+  - name: nokia.sros
+  - name: nokia.srlinux

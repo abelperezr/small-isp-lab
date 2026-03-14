@@ -1,0 +1,25 @@
+{
+  "name": "small-isp-docs",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "docusaurus start --locale es",
+    "start:en": "docusaurus start --locale en",
+    "build": "docusaurus build",
+    "serve": "docusaurus serve --dir build",
+    "preview": "npm run build && npm run serve",
+    "clear": "docusaurus clear",
+    "deploy": "docusaurus deploy"
+  },
+  "dependencies": {
+    "@docusaurus/core": "^3.9.2",
+    "@docusaurus/preset-classic": "^3.9.2",
+    "@docusaurus/theme-mermaid": "^3.9.2",
+    "npkill": "^0.12.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}

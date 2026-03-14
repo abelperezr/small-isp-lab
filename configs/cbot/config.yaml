@@ -1,0 +1,114 @@
+# =============================================================================
+# config.yaml - Containerbot Configuration
+# =============================================================================
+#
+# This file controls:
+#   1. Script metadata overrides (name, description, category, permissions)
+#   2. Ansible settings (inventory path, timeouts)
+#   3. Bot behavior (timeouts, message limits)
+#
+# Scripts are auto-discovered from the scripts/ directory.
+# You only need to add entries here to OVERRIDE the auto-generated metadata.
+# If a script is not listed here, it gets a name derived from its filename
+# and is placed in a category derived from its subdirectory (or "General").
+#
+# Subdirectories inside scripts/ become categories automatically:
+#   scripts/srlinux/olt-to-bng1-down.sh  ->  category: "Srlinux"
+#   scripts/sros/disable-redundant-if.py  ->  category: "Sros"
+#   scripts/verify-srlinux-interfaces.sh  ->  category: "General"
+#
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# Script overrides (key = filename or relative path inside scripts/)
+# ---------------------------------------------------------------------------
+scripts:
+
+  # -- SR Linux interface control scripts --
+  olt-to-bng1-down.sh:
+    name: "OLT -> BNG1 Down"
+    description: "Disable ethernet-1/1 on OLT (10.99.1.4)"
+    category: "Link Failures"
+    confirm: true
+
+  olt-to-bng1-up.sh:
+    name: "OLT -> BNG1 Up"
+    description: "Enable ethernet-1/1 on OLT (10.99.1.4)"
+    category: "Link Failures"
+
+  carrier1-to-bng1-down.sh:
+    name: "Carrier1 -> BNG1 Down"
+    description: "Disable ethernet-1/1 on Carrier1 (10.99.1.252)"
+    category: "Link Failures"
+    confirm: true
+
+  carrier1-to-bng1-up.sh:
+    name: "Carrier1 -> BNG1 Up"
+    description: "Enable ethernet-1/1 on Carrier1 (10.99.1.252)"
+    category: "Link Failures"
+
+  carrier1-to-bng2-down.sh:
+    name: "Carrier1 -> BNG2 Down"
+    description: "Disable ethernet-1/2 on Carrier1 (10.99.1.252)"
+    category: "Link Failures"
+    confirm: true
+
+  carrier1-to-bng2-up.sh:
+    name: "Carrier1 -> BNG2 Up"
+    description: "Enable ethernet-1/2 on Carrier1 (10.99.1.252)"
+    category: "Link Failures"
+
+
+  # -- Verification scripts --
+  verify-srlinux-interfaces.sh:
+    name: "Verify SRL Interfaces"
+    description: "Check admin/oper state of ethernet-1/1 on all SRL nodes"
+    category: "Verification"
+
+  show-sros-ports.py:
+    name: "Show SROS Ports"
+    description: "List SR OS port admin/oper state via NETCONF (scrapli)"
+    category: "Verification"
+    confirm: false
+    args_prompt: "Provide arguments: --host <IP> [--port-id 1/1/c1/1]"
+
+  update-ports-sros.py:
+    name: "Update Ports Sros"
+    description: "Enable/disable SR OS ports via gNMI"
+    category: "General"
+    admin_only: true
+    confirm: true
+    args_prompt: "Provide arguments: --host <IP> --state <enable|disable> [--port-id 1/1/c1/1]"
+
+  manage_authorize.py:
+    name: "Manage Radius Authorize"
+    description: "List, show, add, edit, delete, disconnect or deactivate subscribers on Radius authorize over SSH"
+    category: "Radius"
+    admin_only: true
+    confirm: false
+    args_prompt: "Provide arguments: list | show <id> | add <id> --title \"NAME\" --password \"PASS\" --subscriber-profile \"subprofile\" | delete <id> | disconnect <id> | deactivate <id> [--ssh-host 10.99.1.8] [--disconnect-via local|remote]"
+
+
+# ---------------------------------------------------------------------------
+# Ansible configuration
+# ---------------------------------------------------------------------------
+ansible:
+  inventory: "/app/ansible/inventory/hosts.yml"
+
+# ---------------------------------------------------------------------------
+# Playbook overrides (key = filename inside ansible/playbooks/)
+# ---------------------------------------------------------------------------
+playbooks:
+  lab_ping.yml:
+    name: "Lab Ping All Nodes"
+    description: "Ping all lab nodes from the bot container"
+    confirm: false
+    timeout: 180
+
+
+# ---------------------------------------------------------------------------
+# Bot settings
+# ---------------------------------------------------------------------------
+bot:
+  default_timeout: 120
+  max_message_length: 4000

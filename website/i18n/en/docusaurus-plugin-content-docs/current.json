@@ -1,0 +1,42 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.🗺️ Topología": {
+    "message": "🗺️ Topology",
+    "description": "The label for category '🗺️ Topología' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.🧩 MOPT": {
+    "message": "🧩 MOPT",
+    "description": "The label for category '🧩 MOPT' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.📡 Telemetría": {
+    "message": "📡 Telemetry",
+    "description": "The label for category '📡 Telemetría' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.🔐 RADIUS / AAA": {
+    "message": "🔐 RADIUS / AAA",
+    "description": "The label for category '🔐 RADIUS / AAA' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.🕵️ LEA Console": {
+    "message": "🕵️ LEA Console",
+    "description": "The label for category '🕵️ LEA Console' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.🤖 Containerbot": {
+    "message": "🤖 Containerbot",
+    "description": "The label for category '🤖 Containerbot' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.🧪 ATP": {
+    "message": "🧪 ATP",
+    "description": "The label for category '🧪 ATP' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.🚀 Despliegue": {
+    "message": "🚀 Deploy",
+    "description": "The label for category '🚀 Despliegue' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.doc.🏠 Inicio": {
+    "message": "🏠 Home",
+    "description": "The label for the doc item '🏠 Inicio' in sidebar 'tutorialSidebar', linking to the doc index"
+  }
+}

@@ -1,0 +1,38 @@
+# FreeRADIUS users file 
+
+# ============================================================================
+# ONT2-WAN1
+# ============================================================================
+"test@test.com"      Cleartext-Password := "testlab123"
+                    Framed-Pool = "cgnat",
+                    Framed-IPv6-Pool = "IPv6",
+                    Alc-Delegated-IPv6-Pool = "IPv6",
+                    Alc-SLA-Prof-str = "100M",
+                    Alc-Subsc-Prof-str = "subprofile",
+                    Alc-Subsc-ID-Str = "ONT-002",
+                    Alc-MSAP-Interface = "ipv6-only",
+                    Fall-Through = Yes
+
+# References
+# ============================================================================
+# 00:0c:20:00:00:21 Cleartext-Password := "testlab123"
+#         Alc-Subsc-ID-Str = "sub-1",
+#         Alc-Subsc-Prof-Str = "sub-profile-1",
+#         Alc-SLA-Prof-Str = "sla-profile-1",
+#         Framed-IP-Address = 10.1.0.1,
+#         Framed-IP-Netmask = 255.255.0.0,
+#         Framed-Route = "172.16.11.0/24 0.0.0.0",
+#         Alc-Ipv6-Address = 2001:db8:b001:101::1,
+#         Delegated-IPv6-Prefix = 2001:db8:a001:100::/56,
+#         Alc-Ipv6-Primary-Dns = 2001:db8:dddd:1::1,
+#         Alc-Ipv6-Secondary-Dns = 2001:db8:dddd:2::1,
+
+# ============================================================================
+# DEFAULT entry for tests
+# ============================================================================
+# DEFAULT Cleartext-Password := "testlab123"
+#         Framed-Pool = "cgnat",
+#         Framed-IPv6-Pool = "IPv6",
+#         Alc-Delegated-IPv6-Pool = "IPv6",
+#         Alc-SLA-Prof-str = "100M",
+#         Alc-Subsc-Prof-str = "subprofile"

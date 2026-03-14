@@ -1,0 +1,525 @@
+/* ============================================================
+   SMALL ISP LAB — Docusaurus Custom Theme
+   Fixes: logo overlap · table overflow · card gaps · responsive
+   ============================================================ */
+
+/* ─── Google Fonts ──────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ─── Design Tokens ─────────────────────────────────────────── */
+:root {
+  /* Brand palette */
+  --brand-purple:       #7c3aed;
+  --brand-purple-light: #a855f7;
+  --brand-purple-dim:   rgba(124, 58, 237, 0.15);
+  --brand-cyan:         #06b6d4;
+  --brand-cyan-dim:     rgba(6, 182, 212, 0.12);
+
+  /* Light mode surfaces */
+  --ifm-background-color:         #f8f7ff;
+  --ifm-background-surface-color: #ffffff;
+  --ifm-color-primary:            #7c3aed;
+  --ifm-color-primary-dark:       #6d28d9;
+  --ifm-color-primary-darker:     #5b21b6;
+  --ifm-color-primary-darkest:    #4c1d95;
+  --ifm-color-primary-light:      #8b5cf6;
+  --ifm-color-primary-lighter:    #a78bfa;
+  --ifm-color-primary-lightest:   #c4b5fd;
+
+  /* Typography */
+  --ifm-font-family-base:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ifm-font-family-monospace: 'JetBrains Mono', 'Fira Code', monospace;
+  --ifm-font-size-base:      15px;
+  --ifm-line-height-base:    1.65;
+  --ifm-heading-font-weight: 700;
+
+  /* Navbar */
+  --ifm-navbar-height:        60px;
+  --ifm-navbar-background-color: #ffffff;
+  --ifm-navbar-shadow:        0 1px 0 rgba(0, 0, 0, 0.08);
+  --ifm-navbar-padding-horizontal: 1.25rem;
+
+  /* Sidebar */
+  --ifm-sidebar-width: 280px;
+
+  /* Code */
+  --ifm-code-font-size: 87%;
+  --ifm-code-border-radius: 5px;
+
+  /* Cards */
+  --card-border-radius: 10px;
+  --card-shadow: 0 1px 4px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+
+  /* Table */
+  --ifm-table-border-color: rgba(124, 58, 237, 0.18);
+  --ifm-table-head-background: var(--brand-purple);
+  --ifm-table-head-color: #ffffff;
+  --ifm-table-stripe-background: rgba(124, 58, 237, 0.04);
+}
+
+/* ─── Dark mode ──────────────────────────────────────────────── */
+[data-theme='dark'] {
+  --ifm-background-color:         #0f0e1a;
+  --ifm-background-surface-color: #1a1830;
+  --ifm-color-primary:            #a78bfa;
+  --ifm-color-primary-dark:       #8b5cf6;
+  --ifm-navbar-background-color:  #13111f;
+  --ifm-table-border-color:       rgba(167, 139, 250, 0.2);
+  --ifm-table-head-background:    #3b2a6b;
+  --ifm-table-stripe-background:  rgba(167, 139, 250, 0.05);
+  --card-shadow: 0 1px 4px rgba(0,0,0,0.4), 0 4px 20px rgba(0,0,0,0.3);
+}
+
+/* ─── Base resets ────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ─── NAVBAR FIX: logo overlap ───────────────────────────────── */
+.navbar {
+  height: var(--ifm-navbar-height);
+  padding: 0 var(--ifm-navbar-padding-horizontal);
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+/* Logo container: constrain size so it never overlaps nav items */
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  max-width: 220px;
+  overflow: hidden;
+  margin-right: 1rem;
+}
+
+.navbar__logo {
+  height: 32px;
+  width: auto;
+  flex-shrink: 0;
+  display: block;
+}
+
+.navbar__title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+/* Nav items: ensure they have proper spacing */
+.navbar__items {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+.navbar__item {
+  padding: 0 0.5rem;
+}
+
+.navbar__link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Search: don't let it overflow */
+.navbar__search {
+  flex-shrink: 0;
+}
+
+/* ─── SIDEBAR ────────────────────────────────────────────────── */
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--ifm-toc-border-color) !important;
+}
+
+.menu__link {
+  font-size: 0.875rem;
+  border-radius: 6px;
+  padding: 0.375rem 0.75rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.menu__link--active {
+  background: var(--brand-purple-dim) !important;
+  color: var(--ifm-color-primary) !important;
+  font-weight: 600;
+}
+
+/* ─── MAIN CONTENT LAYOUT ────────────────────────────────────── */
+.main-wrapper {
+  min-height: calc(100vh - var(--ifm-navbar-height));
+}
+
+/* Ensure article content doesn't overflow horizontally */
+article {
+  overflow-x: visible;
+  word-break: break-word;
+}
+
+.container {
+  max-width: 1200px !important;
+}
+
+/* ─── CARD GRID ──────────────────────────────────────────────── */
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+  overflow: visible;
+  padding-right: 2px;
+}
+
+.docCard {
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-table-border-color);
+  border-radius: var(--card-border-radius);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  /* FIX: prevent cards from overflowing container */
+  min-width: 0;
+  overflow: visible;
+}
+
+.docCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.18);
+  border-color: var(--brand-purple-light);
+}
+
+.docCard h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ifm-color-primary);
+  line-height: 1.3;
+}
+
+.docCard p {
+  margin: 0;
+  font-size: 0.84rem;
+  color: #4b5563;
+  line-height: 1.55;
+}
+
+[data-theme='dark'] .docCard p {
+  color: #c7cde0;
+}
+
+/* ─── TABLES ─────────────────────────────────────────────────── */
+/* Desktop/tablet: keep real table layout so wrapper and columns match exactly */
+.markdown table,
+table {
+  display: table;
+  width: 100%;
+  min-width: 100%;
+  border-collapse: collapse;
+  border-radius: var(--card-border-radius);
+  border: 1px solid var(--ifm-table-border-color);
+  box-shadow: var(--card-shadow);
+  border-spacing: 0;
+  table-layout: auto;
+}
+
+.markdown table thead tr,
+table thead tr {
+  background: var(--ifm-table-head-background) !important;
+}
+
+.markdown table thead th,
+table thead th {
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.75rem 1rem;
+  border: none;
+  /* FIX: no gap at right edge */
+  white-space: nowrap;
+  text-align: left;
+}
+
+.markdown table tbody tr:nth-child(even),
+table tbody tr:nth-child(even) {
+  background: var(--ifm-table-stripe-background);
+}
+
+.markdown table tbody tr:hover,
+table tbody tr:hover {
+  background: var(--brand-purple-dim) !important;
+}
+
+.markdown table td,
+table td {
+  padding: 0.6rem 1rem;
+  font-size: 0.875rem;
+  border: none;
+  border-bottom: 1px solid var(--ifm-table-border-color);
+  vertical-align: middle;
+  /* FIX: last column fills to edge */
+}
+
+/* Keep index/number columns readable (e.g., 10 should not split as 1/0) */
+.markdown table th:first-child,
+.markdown table td:first-child,
+table th:first-child,
+table td:first-child {
+  white-space: nowrap;
+  word-break: normal;
+  min-width: 3.2rem;
+}
+
+.markdown table tbody tr:last-child td,
+table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Mobile: allow horizontal scroll without breaking desktop alignment */
+@media (max-width: 768px) {
+  .markdown table,
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    min-width: unset;
+  }
+}
+
+/* ─── CODE & INLINE CODE ─────────────────────────────────────── */
+code {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: var(--ifm-code-font-size);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  background: var(--brand-purple-dim);
+  color: var(--brand-purple-light);
+  border: 1px solid rgba(124, 58, 237, 0.15);
+  word-break: break-word;
+}
+
+[data-theme='dark'] code {
+  background: rgba(167, 139, 250, 0.1);
+  color: #c4b5fd;
+}
+
+/* Code blocks */
+.prism-code {
+  font-size: 0.85rem !important;
+  border-radius: var(--card-border-radius) !important;
+}
+
+pre {
+  overflow-x: auto !important;
+  word-break: normal !important;
+}
+
+/* ─── ADMONITIONS (:::info, :::warning) ─────────────────────── */
+.admonition {
+  border-radius: var(--card-border-radius);
+  border-left-width: 4px;
+  padding: 1rem 1.25rem;
+  /* FIX: prevent content overflow */
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.admonition-heading h5 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+
+/* ─── HEADINGS ───────────────────────────────────────────────── */
+h1, h2, h3 {
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: clamp(1.6rem, 4vw, 2.25rem);
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  margin-top: 2.5rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--brand-purple-dim);
+}
+
+/* ─── TOC (right sidebar) ────────────────────────────────────── */
+.table-of-contents__link {
+  font-size: 0.8rem;
+  color: #5b6476;
+  transition: color 0.15s;
+}
+
+[data-theme='dark'] .table-of-contents__link {
+  color: #a9b1c4;
+}
+
+.table-of-contents__link--active {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+/* ─── FOOTER ─────────────────────────────────────────────────── */
+.footer {
+  font-size: 0.8rem;
+}
+
+/* ─── RESPONSIVE BREAKPOINTS ─────────────────────────────────── */
+
+/* Tablet ≤ 996px: sidebar collapses → content needs more room */
+@media (max-width: 996px) {
+  :root {
+    --ifm-navbar-padding-horizontal: 1rem;
+  }
+
+  .navbar__title {
+    max-width: 120px;
+    font-size: 0.85rem;
+  }
+
+  .cardGrid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+
+/* Mobile ≤ 768px */
+@media (max-width: 768px) {
+  :root {
+    --ifm-font-size-base: 14px;
+    --ifm-navbar-padding-horizontal: 0.75rem;
+  }
+
+  /* Logo: show icon only if title makes it too crowded */
+  .navbar__brand {
+    max-width: 180px;
+  }
+
+  .navbar__title {
+    max-width: 100px;
+    font-size: 0.8rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .cardGrid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  /* Tables: ensure scroll indicator is visible */
+  .markdown table,
+  table {
+    font-size: 0.8rem;
+  }
+
+  .markdown table thead th,
+  table thead th {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .markdown table td,
+  table td {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .admonition {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* Very small ≤ 480px */
+@media (max-width: 480px) {
+  .navbar__title {
+    display: none; /* Show only logo icon on tiny screens */
+  }
+
+  .navbar__brand {
+    max-width: 48px;
+  }
+
+  code {
+    font-size: 0.78rem;
+    word-break: break-all;
+  }
+}
+
+/* ─── SCROLL INDICATOR for tables on mobile ──────────────────── */
+.markdown table::after,
+table::after {
+  content: '';
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .markdown > table,
+  .theme-doc-markdown table {
+    position: relative;
+  }
+}
+
+/* ─── MISC POLISH ─────────────────────────────────────────────── */
+
+/* Smooth scrollbar on supported browsers */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--brand-purple-dim);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-purple);
+}
+
+/* Focus outlines */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--brand-purple);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* Breadcrumb */
+.breadcrumbs__item {
+  font-size: 0.8rem;
+}
+
+/* Pagination */
+.pagination-nav__link {
+  border-radius: var(--card-border-radius);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--brand-purple);
+  box-shadow: 0 0 0 3px var(--brand-purple-dim);
+}

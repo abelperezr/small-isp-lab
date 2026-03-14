@@ -1,0 +1,238 @@
+{
+  "title": {
+    "message": "Small ISP Lab",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "Small ISP Lab",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Inicio": {
+    "message": "Home",
+    "description": "Navbar item with label Inicio"
+  },
+  "item.label.Topo": {
+    "message": "Topo",
+    "description": "Navbar item with label Topo"
+  },
+  "item.label.MOPT": {
+    "message": "MOPT",
+    "description": "Navbar item with label MOPT"
+  },
+  "item.label.Telem": {
+    "message": "Telem",
+    "description": "Navbar item with label Telem"
+  },
+  "item.label.Radius": {
+    "message": "Radius",
+    "description": "Navbar item with label Radius"
+  },
+  "item.label.LEA": {
+    "message": "LEA",
+    "description": "Navbar item with label LEA"
+  },
+  "item.label.Cbot": {
+    "message": "Cbot",
+    "description": "Navbar item with label Cbot"
+  },
+  "item.label.ATP": {
+    "message": "ATP",
+    "description": "Navbar item with label ATP"
+  },
+  "item.label.Deploy": {
+    "message": "Deploy",
+    "description": "Navbar item with label Deploy"
+  },
+  "item.label.Vista General": {
+    "message": "Overview",
+    "description": "Navbar item with label Vista General"
+  },
+  "item.label.Underlay": {
+    "message": "Underlay",
+    "description": "Navbar item with label Underlay"
+  },
+  "item.label.Overlay": {
+    "message": "Overlay",
+    "description": "Navbar item with label Overlay"
+  },
+  "item.label.BGP": {
+    "message": "BGP",
+    "description": "Navbar item with label BGP"
+  },
+  "item.label.SRRP": {
+    "message": "SRRP",
+    "description": "Navbar item with label SRRP"
+  },
+  "item.label.Auth Flow": {
+    "message": "Auth Flow",
+    "description": "Navbar item with label Auth Flow"
+  },
+  "item.label.BNG Master": {
+    "message": "BNG Master",
+    "description": "Navbar item with label BNG Master"
+  },
+  "item.label.BNG Slave": {
+    "message": "BNG Slave",
+    "description": "Navbar item with label BNG Slave"
+  },
+  "item.label.OLT": {
+    "message": "OLT",
+    "description": "Navbar item with label OLT"
+  },
+  "item.label.ONT1": {
+    "message": "ONT1",
+    "description": "Navbar item with label ONT1"
+  },
+  "item.label.ONT2": {
+    "message": "ONT2",
+    "description": "Navbar item with label ONT2"
+  },
+  "item.label.Carrier1": {
+    "message": "Carrier1",
+    "description": "Navbar item with label Carrier1"
+  },
+  "item.label.Carrier2": {
+    "message": "Carrier2",
+    "description": "Navbar item with label Carrier2"
+  },
+  "item.label.DNS64": {
+    "message": "DNS64",
+    "description": "Navbar item with label DNS64"
+  },
+  "item.label.LEA/LIG": {
+    "message": "LEA/LIG",
+    "description": "Navbar item with label LEA/LIG"
+  },
+  "item.label.gNMIc": {
+    "message": "gNMIc",
+    "description": "Navbar item with label gNMIc"
+  },
+  "item.label.Prometheus": {
+    "message": "Prometheus",
+    "description": "Navbar item with label Prometheus"
+  },
+  "item.label.Grafana": {
+    "message": "Grafana",
+    "description": "Navbar item with label Grafana"
+  },
+  "item.label.Usuarios": {
+    "message": "Users",
+    "description": "Navbar item with label Usuarios"
+  },
+  "item.label.Arquitectura": {
+    "message": "Architecture",
+    "description": "Navbar item with label Arquitectura"
+  },
+  "item.label.Integración": {
+    "message": "Integration",
+    "description": "Navbar item with label Integración"
+  },
+  "item.label.Ejecución": {
+    "message": "Execution",
+    "description": "Navbar item with label Ejecución"
+  },
+  "item.label.Telegram": {
+    "message": "Telegram",
+    "description": "Navbar item with label Telegram"
+  },
+  "item.label.Operación": {
+    "message": "Operations",
+    "description": "Navbar item with label Operación"
+  },
+  "item.label.BNG Baseline": {
+    "message": "BNG Baseline",
+    "description": "Navbar item with label BNG Baseline"
+  },
+  "item.label.ONT": {
+    "message": "ONT",
+    "description": "Navbar item with label ONT"
+  },
+  "item.label.ESM": {
+    "message": "ESM",
+    "description": "Navbar item with label ESM"
+  },
+  "item.label.CGNAT": {
+    "message": "CGNAT",
+    "description": "Navbar item with label CGNAT"
+  },
+  "item.label.NAT64": {
+    "message": "NAT64",
+    "description": "Navbar item with label NAT64"
+  },
+  "item.label.QoS": {
+    "message": "QoS",
+    "description": "Navbar item with label QoS"
+  },
+  "item.label.Services L2/L3": {
+    "message": "Services L2/L3",
+    "description": "Navbar item with label Services L2/L3"
+  },
+  "item.label.SRRP/BGP": {
+    "message": "SRRP/BGP",
+    "description": "Navbar item with label SRRP/BGP"
+  },
+  "item.label.Instalación": {
+    "message": "Install",
+    "description": "Navbar item with label Instalación"
+  },
+  "item.label.Requisitos": {
+    "message": "Requirements",
+    "description": "Navbar item with label Requisitos"
+  },
+  "item.label.1. Validación base de BNG": {
+    "message": "1. BNG baseline validation",
+    "description": "Navbar item with label 1. Validación base de BNG"
+  },
+  "item.label.2. Validación base de Carriers": {
+    "message": "2. Carrier baseline validation",
+    "description": "Navbar item with label 2. Validación base de Carriers"
+  },
+  "item.label.3. Validación base de OLT": {
+    "message": "3. OLT baseline validation",
+    "description": "Navbar item with label 3. Validación base de OLT"
+  },
+  "item.label.4. Servicios L2/L3": {
+    "message": "4. L2/L3 services",
+    "description": "Navbar item with label 4. Servicios L2/L3"
+  },
+  "item.label.5. QoS": {
+    "message": "5. QoS",
+    "description": "Navbar item with label 5. QoS"
+  },
+  "item.label.6. SRRP y BGP": {
+    "message": "6. SRRP and BGP",
+    "description": "Navbar item with label 6. SRRP y BGP"
+  },
+  "item.label.7. ESM": {
+    "message": "7. ESM",
+    "description": "Navbar item with label 7. ESM"
+  },
+  "item.label.8. CGNAT": {
+    "message": "8. CGNAT",
+    "description": "Navbar item with label 8. CGNAT"
+  },
+  "item.label.9. NAT64": {
+    "message": "9. NAT64",
+    "description": "Navbar item with label 9. NAT64"
+  },
+  "item.label.10. Pruebas ONT": {
+    "message": "10. ONT tests",
+    "description": "Navbar item with label 10. Pruebas ONT"
+  },
+  "item.label.11. LEA y LI": {
+    "message": "11. LEA and LI",
+    "description": "Navbar item with label 11. LEA y LI"
+  },
+  "item.label.12. Observabilidad": {
+    "message": "12. Observability",
+    "description": "Navbar item with label 12. Observabilidad"
+  },
+  "item.label.13. Failover Suscriptores SRRP": {
+    "message": "13. SRRP Subscriber Failover",
+    "description": "Navbar item with label 13. Failover Suscriptores SRRP"
+  },
+  "item.label.14. Final Boss": {
+    "message": "14. Final Boss",
+    "description": "Navbar item with label 14. Final Boss"
+  }
+}

@@ -1,0 +1,313 @@
+username: admin
+password: admin
+port: 57400
+timeout: 10s
+skip-verify: true
+encoding: json_ietf
+
+loader:
+  type: docker
+  address: unix:///run/docker.sock
+  filters:
+    # ─── SR Linux nodes ────────────────────────────────────────────────────────
+    - containers:
+        - label: clab-node-kind=nokia_srlinux
+      network:
+        label: containerlab
+      port: "57400"
+      template: |
+        name: {{ index .Labels "clab-node-name" }}
+      config:
+        username: admin
+        password: lab123
+        skip-verify: true
+        encoding: proto
+        subscriptions:
+          - srl_platform
+          - srl_apps
+          - srl_if_stats
+          - srl_if_lag_stats
+          - srl_net_instance
+          - srl_bgp_stats
+          - srl_event_handler_stats
+
+    # ─── SR OS simulator nodes ─────────────────────────────────────────────────
+    - containers:
+        - label: clab-node-kind=nokia_srsim
+      network:
+        label: containerlab
+      port: "57400"
+      template: |
+        name: {{ index .Labels "clab-node-name" }}
+      config:
+        username: admin
+        password: lab123
+        insecure: true
+        encoding: json
+        subscriptions:
+          - sros_ports_stats
+          - sros_router_bgp
+          - sros_router_interface
+          - sros_router_isis
+          - sros_router_route_table
+          - sros_system
+          - sros_service_stats
+          - sros_temperature_stats
+          - sros_fan_stats
+          - sros_suscribers
+          - sros_vpls_sap_all
+
+
+subscriptions:
+  # ── SR Linux ────────────────────────────────────────────────────────────────
+  srl_platform:
+    paths:
+      - /platform/control[slot=*]/cpu[index=all]/total
+      - /platform/control[slot=*]/memory
+    mode: stream
+    stream-mode: sample
+    sample-interval: 5s
+
+  srl_apps:
+    paths:
+      - /system/app-management/application[name=*]
+    mode: stream
+    stream-mode: sample
+    sample-interval: 5s
+
+  srl_if_stats:
+    paths:
+      - /interface[name=ethernet-1/*]/statistics
+      - /interface[name=*]/subinterface[index=*]/statistics/
+      - /interface[name=ethernet-1/*]/oper-state
+      - /interface[name=ethernet-1/*]/traffic-rate
+    mode: stream
+    stream-mode: sample
+    sample-interval: 5s
+
+  srl_if_lag_stats:
+    paths:
+      - /interface[name=*]/lag/member[name=*]/lacp/statistics
+    mode: stream
+    stream-mode: sample
+    sample-interval: 5s
+
+  srl_net_instance:
+    paths:
+      - /network-instance[name=*]/oper-state
+      - /network-instance[name=*]/route-table/ipv4-unicast/statistics/
+      - /network-instance[name=*]/route-table/ipv6-unicast/statistics/
+    mode: stream
+    stream-mode: sample
+    sample-interval: 5s
+
+  srl_bgp_stats:
+    paths:
+      - /network-instance[name=*]/protocols/bgp/statistics
+      - /network-instance[name=*]/protocols/bgp/group[group-name=*]/statistics
+    mode: stream
+    stream-mode: sample
+    sample-interval: 5s
+
+  srl_event_handler_stats:
+    paths:
+      - /system/event-handler/instance[name=*]/statistics/
+    mode: stream
+    stream-mode: sample
+    sample-interval: 5s
+
+  # ── SR OS ───────────────────────────────────────────────────────────────────
+  sros_ports_stats:
+    paths:
+      - /state/port/oper-state
+      - /state/port/statistics/
+      - /state/port/ethernet/statistics/
+    stream-mode: sample
+    sample-interval: 5s
+
+  sros_router_bgp:
+    paths:
+      - /state/router/bgp/statistics/
+      - /state/router/bgp/statistics/routes-per-family/
+      - /state/router/bgp/neighbor/statistics/
+    stream-mode: sample
+    sample-interval: 5s
+
+  sros_router_interface:
+    paths:
+      - /state/router/interface/ipv4/statistics/
+      - /state/router/interface/ipv6/statistics/
+      - /state/router/interface/statistics/
+    stream-mode: sample
+    sample-interval: 5s
+
+  sros_vpls_sap_all:
+    paths:
+      - /state/service/vpls[service-name=*]/sap[sap-id=*]
+    stream-mode: sample
+    sample-interval: 10s
+
+  sros_router_isis:
+    paths:
+      - /state/router/isis/statistics/
+    stream-mode: sample
+    sample-interval: 5s
+
+  sros_router_route_table:
+    paths:
+      - /state/router/route-table/unicast/ipv4/statistics/
+      - /state/router/route-table/unicast/ipv6/statistics/
+    stream-mode: sample
+    sample-interval: 5s
+
+  sros_system:
+    paths:
+      - /state/system/cpu[sample-period=1]
+      - /state/system/memory-pools/
+    stream-mode: sample
+    sample-interval: 5s
+
+  sros_service_stats:
+    paths:
+      - /state/service/vpls[service-name=*]/oper-state
+      - /state/service/vprn[service-name=*]/oper-state
+      # ── VPRN 9999 eBGP stats completo ──────────────────────────────────────
+      - /state/service/vprn[service-name=9999]/bgp/statistics
+      - /state/service/vprn[service-name=9999]/bgp/statistics/routes-per-family
+      - /state/service/vprn[service-name=9999]/bgp/neighbor/statistics
+    mode: stream
+    stream-mode: sample
+    sample-interval: 5s
+
+  sros_suscribers:
+    paths:
+      # Subtree completo por subscriber. SR OS expone el árbol real bajo este path.
+      - /state/subscriber-mgmt/subscriber[subscriber-id=ONT-001]
+      - /state/subscriber-mgmt/subscriber[subscriber-id=ONT-002]
+    stream-mode: sample
+    sample-interval: 10s
+
+  sros_temperature_stats:
+    paths:
+      - /state/card[slot-number=*]/hardware-data/temperature
+      - /state/card[slot-number=*]/mda[mda-slot=*]/hardware-data/temperature
+      - /state/chassis[chassis-class=router][chassis-number=1]/chassis-control-module[ccm-slot=*]/hardware-data/temperature
+    stream-mode: sample
+    sample-interval: 5s
+
+  sros_fan_stats:
+    paths:
+      - /state/chassis[chassis-class=router][chassis-number=1]/fan[fan-slot=*]/speed
+    stream-mode: sample
+    sample-interval: 5s
+
+
+## ── PROMETHEUS OUTPUT ──────────────────────────────────────────────────────
+outputs:
+  prom:
+    type: prometheus
+    listen: :9273
+    path: /metrics
+    export-timestamps: true
+    strings-as-labels: true
+    debug: false
+    event-processors:
+      - trim-sros-prefixes
+      - add-labels
+      - trim-regex
+      - group-by-interface
+      - up-down-map
+
+
+processors:
+  trim-sros-prefixes:
+    event-strings:
+      value-names:
+        - "^/state/.*"
+      transforms:
+        - trim-prefix:
+            apply-on: "name"
+            prefix: "/state"
+
+  add-labels:
+    event-extract-tags:
+      value-names:
+        # ── Router Base BGP ──────────────────────────────────────────────────
+        - /router/route-table/unicast/(?P<family>[a-zA-Z0-9-_:]+)/statistics/(?P<protocol>[a-zA-Z0-9-_:]+)/([a-zA-Z0-9-_:]+)
+        - /router/bgp/statistics/routes-per-family/(?P<family>[a-zA-Z0-9-_:]+)/([a-zA-Z0-9-_:]+)
+        - /router/interface/(?P<family>[a-zA-Z0-9-_:]+)/statistics/([a-zA-Z0-9-_:]+)
+        - /router/bgp/neighbor/statistics/family-prefix/(?P<family>[a-zA-Z0-9-_:]+)/([a-zA-Z0-9-_:]+)
+        # ── VPRN BGP (eBGP Internet) ─────────────────────────────────────────
+        - /service/vprn/bgp/statistics/routes-per-family/(?P<family>[a-zA-Z0-9-_:]+)/([a-zA-Z0-9-_:]+)
+        - /service/vprn/bgp/neighbor/statistics/family-prefix/(?P<family>[a-zA-Z0-9-_:]+)/([a-zA-Z0-9-_:]+)
+
+  trim-regex:
+    event-strings:
+      value-names:
+        - ".*"
+      transforms:
+        # ── Router Base ──────────────────────────────────────────────────────
+        - replace:
+            apply-on: "name"
+            keep: false
+            old: "/router/route-table/unicast/([a-zA-Z0-9-_:]+)/statistics/([a-zA-Z0-9-_:]+)/([a-zA-Z0-9-_:]+)"
+            new: "/router/route-table/unicast/$3"
+        - replace:
+            apply-on: "name"
+            keep: false
+            old: "/router/bgp/statistics/routes-per-family/([a-zA-Z0-9-_:]+)/([a-zA-Z0-9-_:]+)"
+            new: "/router/bgp/statistics/routes-per-family/$2"
+        - replace:
+            apply-on: "name"
+            keep: false
+            old: "/router/interface/([a-zA-Z0-9-_:]+)/statistics/([a-zA-Z0-9-_:]+)"
+            new: "/router/interface/statistics/$2"
+        - replace:
+            apply-on: "name"
+            keep: false
+            old: "/router/bgp/neighbor/statistics/family-prefix/([a-zA-Z0-9-_:]+)/([a-zA-Z0-9-_:]+)"
+            new: "/router/bgp/neighbor/statistics/family-prefix/$2"
+        # ── VPRN BGP ─────────────────────────────────────────────────────────
+        - replace:
+            apply-on: "name"
+            keep: false
+            old: "/service/vprn/bgp/statistics/routes-per-family/([a-zA-Z0-9-_:]+)/([a-zA-Z0-9-_:]+)"
+            new: "/service/vprn/bgp/statistics/routes-per-family/$2"
+        - replace:
+            apply-on: "name"
+            keep: false
+            old: "/service/vprn/bgp/neighbor/statistics/family-prefix/([a-zA-Z0-9-_:]+)/([a-zA-Z0-9-_:]+)"
+            new: "/service/vprn/bgp/neighbor/statistics/family-prefix/$2"
+
+  group-by-interface:
+    event-group-by:
+      tags:
+        - interface_name
+
+  up-down-map:
+    event-strings:
+      value-names:
+        - oper-state
+        - forwarding-state
+        - session-state
+      transforms:
+        - replace:
+            apply-on: "value"
+            old: "up"
+            new: "1"
+        - replace:
+            apply-on: "value"
+            old: "down"
+            new: "0"
+        - replace:
+            apply-on: "value"
+            old: "Established"
+            new: "1"
+        - replace:
+            apply-on: "value"
+            old: "Idle"
+            new: "0"
+        - replace:
+            apply-on: "value"
+            old: "Active"
+            new: "2"

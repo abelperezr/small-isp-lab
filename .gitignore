@@ -1,0 +1,50 @@
+# Python
+.venv/
+venv/
+env/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+*.py[cod]
+
+# Node / Docusaurus build artifacts
+website/node_modules/
+website/.docusaurus/
+website/build/
+website/.cache/
+
+# Local runtime artifacts
+clab-*/
+site/
+*.log
+*.bak
+*.pid
+resultsSRRPSwitch_*.out
+*.zip
+lab.yml.annotations.json
+containerbot/build
+
+# Editor / OS artifacts
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+
+# Sensitive local files
+*.env
+
+configs/license/*
+!configs/license/.gitkeep
+license/
+SR_SIM_license.txt
+*.lic
+
+# Versioned templates that must remain in Git
+!configs/cbot/secrets.env.example
+!configs/cbot/secrets.env
+
+# Local helper scripts
+push-github.sh
+prepare-distribution.sh

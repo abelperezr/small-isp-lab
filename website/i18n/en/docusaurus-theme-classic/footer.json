@@ -1,0 +1,46 @@
+{
+  "link.title.Documentación": {
+    "message": "Documentation",
+    "description": "The title of the footer links column with title=Documentación in the footer"
+  },
+  "link.title.Lab": {
+    "message": "Lab",
+    "description": "The title of the footer links column with title=Lab in the footer"
+  },
+  "link.title.Recursos": {
+    "message": "Resources",
+    "description": "The title of the footer links column with title=Recursos in the footer"
+  },
+  "link.item.label.Inicio": {
+    "message": "Home",
+    "description": "The label of footer link with label=Inicio linking to /docs"
+  },
+  "link.item.label.Despliegue": {
+    "message": "Deploy",
+    "description": "The label of footer link with label=Despliegue linking to /docs/despliegue/instalacion"
+  },
+  "link.item.label.Topología": {
+    "message": "Topology",
+    "description": "The label of footer link with label=Topología linking to /docs/topologia/"
+  },
+  "link.item.label.Telemetría": {
+    "message": "Telemetry",
+    "description": "The label of footer link with label=Telemetría linking to /docs/telemetria/"
+  },
+  "link.item.label.ATP": {
+    "message": "ATP",
+    "description": "The label of footer link with label=ATP linking to /docs/atp/"
+  },
+  "link.item.label.GitHub": {
+    "message": "GitHub",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/abelperezr/small-isp-lab"
+  },
+  "link.item.label.YouTube @networkblade": {
+    "message": "YouTube @networkblade",
+    "description": "The label of footer link with label=YouTube @networkblade linking to https://youtube.com/@networkblade"
+  },
+  "copyright": {
+    "message": "Copyright © 2026 Abel Pérez — Small ISP Lab · Built with Docusaurus",
+    "description": "The footer copyright"
+  }
+}

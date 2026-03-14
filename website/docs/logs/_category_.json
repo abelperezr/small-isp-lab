@@ -1,0 +1,8 @@
+{
+  "label": "LOGs",
+  "position": 7,
+  "link": {
+    "type": "generated-index",
+    "description": "Pipeline de syslog con Loki, Alloy y Grafana para equipos Nokia SR OS y SR Linux."
+  }
+}

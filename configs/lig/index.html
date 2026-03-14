@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LEA — Sistema de Interceptación Legal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg:       #080b0f;
+    --panel:    #0d1117;
+    --border:   #1a2332;
+    --border2:  #243044;
+    --accent:   #00d4ff;
+    --accent2:  #00ff88;
+    --warn:     #ff6b35;
+    --danger:   #ff2d55;
+    --muted:    #3d5066;
+    --text:     #c8d8e8;
+    --text2:    #6a8aaa;
+    --mono:     'Share Tech Mono', monospace;
+    --sans:     'Rajdhani', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Scanline overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,212,255,0.015) 2px,
+      rgba(0,212,255,0.015) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── Header ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    border: 1px solid var(--accent);
+    padding: 4px 10px;
+    position: relative;
+  }
+
+  .logo::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px;
+    width: 8px; height: 8px;
+    border-top: 2px solid var(--accent);
+    border-left: 2px solid var(--accent);
+  }
+
+  .logo::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; right: -1px;
+    width: 8px; height: 8px;
+    border-bottom: 2px solid var(--accent);
+    border-right: 2px solid var(--accent);
+  }
+
+  .sys-title {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .sys-title span { color: var(--accent); }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .status-dot {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 1px;
+  }
+
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent2);
+    box-shadow: 0 0 8px var(--accent2);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .dot.inactive { background: var(--muted); box-shadow: none; animation: none; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  #clock {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 2px;
+  }
+
+  .btn-clear {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    background: transparent;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    padding: 5px 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+
+  .btn-clear:hover {
+    background: var(--danger);
+    color: #fff;
+    box-shadow: 0 0 12px rgba(255,45,85,0.5);
+  }
+
+  /* ── Layout ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 1px;
+    height: calc(100vh - 57px);
+    background: var(--border);
+  }
+
+  /* ── Stats Bar ── */
+  .stats-bar {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .stat-card {
+    flex: 1;
+    background: var(--panel);
+    padding: 14px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s;
+  }
+
+  .stat-card.active { border-bottom-color: var(--accent); }
+  .stat-card.green  { border-bottom-color: var(--accent2); }
+  .stat-card.orange { border-bottom-color: var(--warn); }
+  .stat-card.red    { border-bottom-color: var(--danger); }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .stat-value {
+    font-family: var(--mono);
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .stat-sub {
+    font-size: 11px;
+    color: var(--text2);
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    background: var(--panel);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-header {
+    padding: 14px 16px 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border2);
+  }
+
+  .intercept-list { flex: 1; overflow-y: auto; }
+
+  .intercept-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+
+  .intercept-item:hover { background: rgba(0,212,255,0.04); }
+
+  .intercept-item.selected {
+    background: rgba(0,212,255,0.08);
+    border-left: 2px solid var(--accent);
+  }
+
+  .iid-badge {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+
+  .iid-label {
+    font-size: 11px;
+    color: var(--text2);
+    margin-top: 2px;
+  }
+
+  .iid-stats {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .iid-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .iid-stat-val {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  .iid-stat-lbl {
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .iid-last {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  .empty-intercepts {
+    padding: 24px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.8;
+  }
+
+  /* ── Main panel ── */
+  .main-panel {
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border2);
+    gap: 12px;
+  }
+
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .filter-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .filter-select, .filter-input {
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .filter-select:focus, .filter-input:focus {
+    border-color: var(--accent);
+  }
+
+  .filter-input { width: 140px; }
+
+  .live-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 1px;
+    cursor: pointer;
+  }
+
+  .toggle-switch {
+    width: 36px; height: 18px;
+    background: var(--border2);
+    border-radius: 9px;
+    position: relative;
+    transition: background 0.2s;
+    cursor: pointer;
+    border: none;
+    outline: none;
+  }
+
+  .toggle-switch.on { background: var(--accent2); }
+
+  .toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform 0.2s;
+  }
+
+  .toggle-switch.on::after { transform: translateX(18px); }
+
+  /* ── Table ── */
+  .table-wrap {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  thead tr {
+    background: var(--panel);
+    border-bottom: 1px solid var(--border2);
+  }
+
+  th {
+    padding: 9px 12px;
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--text2);
+    text-transform: uppercase;
+    white-space: nowrap;
+    font-weight: 400;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(26,35,50,0.6);
+    transition: background 0.1s;
+    animation: rowIn 0.3s ease-out;
+  }
+
+  tbody tr:hover { background: rgba(0,212,255,0.04); }
+
+  @keyframes rowIn {
+    from { opacity: 0; transform: translateX(-6px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  td {
+    padding: 8px 12px;
+    white-space: nowrap;
+    color: var(--text);
+  }
+
+  .td-ts  { color: var(--text2); font-size: 11px; }
+  .td-iid { color: var(--accent); }
+  .td-sid { color: var(--muted); }
+
+  .dir-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+
+  .dir-ingress {
+    background: rgba(0,255,136,0.1);
+    color: var(--accent2);
+    border: 1px solid rgba(0,255,136,0.3);
+  }
+
+  .dir-egress {
+    background: rgba(255,107,53,0.1);
+    color: var(--warn);
+    border: 1px solid rgba(255,107,53,0.3);
+  }
+
+  .proto-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    font-size: 10px;
+    border-radius: 2px;
+    border: 1px solid var(--border2);
+    color: var(--text2);
+  }
+
+  .proto-TCP  { color: #7eb8ff; border-color: rgba(126,184,255,0.3); background: rgba(126,184,255,0.07); }
+  .proto-UDP  { color: #b8a0ff; border-color: rgba(184,160,255,0.3); background: rgba(184,160,255,0.07); }
+  .proto-ICMP, .proto-ICMPv6 {
+    color: var(--warn);
+    border-color: rgba(255,107,53,0.3);
+    background: rgba(255,107,53,0.07);
+  }
+
+  .ip-cell { max-width: 160px; overflow: hidden; text-overflow: ellipsis; }
+  .ip6 { color: var(--text2); font-size: 11px; }
+
+  .mac-cell {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 0.5px;
+  }
+
+  .vlan-cell { white-space: nowrap; }
+
+  .vlan-badge {
+    display: inline-block;
+    padding: 1px 5px;
+    font-size: 10px;
+    font-family: var(--mono);
+    border-radius: 2px;
+    background: rgba(0,212,255,0.07);
+    border: 1px solid rgba(0,212,255,0.2);
+    color: var(--accent);
+  }
+
+  .port-cell { color: var(--text2); }
+
+  .size-cell { color: var(--muted); text-align: right; }
+
+  /* empty state */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 16px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .empty-icon {
+    font-size: 48px;
+    opacity: 0.3;
+  }
+
+  .empty-text {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+  /* ── Bottom bar ── */
+  .bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 16px;
+    background: var(--panel);
+    border-top: 1px solid var(--border2);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .pkt-counter { color: var(--accent2); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="logo">LEA</div>
+    <div class="sys-title">Sistema de <span>Interceptación Legal</span> — Monitoreo de Tráfico</div>
+  </div>
+  <div class="header-right">
+    <div class="status-dot">
+      <div class="dot" id="liveDot"></div>
+      <span id="liveStatus">LIVE</span>
+    </div>
+    <div id="clock">--:--:--</div>
+    <button class="btn-clear" onclick="clearData()">⊘ LIMPIAR</button>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-card active">
+      <div class="stat-label">Total Paquetes</div>
+      <div class="stat-value" id="s-total">0</div>
+      <div class="stat-sub">interceptados</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">Ingress</div>
+      <div class="stat-value" id="s-ingress">0</div>
+      <div class="stat-sub">upstream → BNG</div>
+    </div>
+    <div class="stat-card orange">
+      <div class="stat-label">Egress</div>
+      <div class="stat-value" id="s-egress">0</div>
+      <div class="stat-sub">BNG → suscriptor</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">IPv4</div>
+      <div class="stat-value" id="s-ipv4">0</div>
+      <div class="stat-sub">paquetes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">IPv6</div>
+      <div class="stat-value" id="s-ipv6">0</div>
+      <div class="stat-sub">paquetes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Interceptaciones</div>
+      <div class="stat-value" id="s-iids">0</div>
+      <div class="stat-sub">activas</div>
+    </div>
+  </div>
+
+  <!-- Sidebar: intercept IDs -->
+  <div class="sidebar">
+    <div class="sidebar-header">▸ Intercept IDs</div>
+    <div class="intercept-list" id="interceptList">
+      <div class="empty-intercepts">
+        Sin interceptaciones activas.<br>
+        Esperando tráfico LI...
+      </div>
+    </div>
+  </div>
+
+  <!-- Main: event table -->
+  <div class="main-panel">
+    <div class="toolbar">
+      <div class="filter-group">
+        <span class="filter-label">Dirección</span>
+        <select class="filter-select" id="filterDir" onchange="applyFilters()">
+          <option value="">TODOS</option>
+          <option value="INGRESS">INGRESS</option>
+          <option value="EGRESS">EGRESS</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Protocolo</span>
+        <select class="filter-select" id="filterProto" onchange="applyFilters()">
+          <option value="">TODOS</option>
+          <option value="TCP">TCP</option>
+          <option value="UDP">UDP</option>
+          <option value="ICMP">ICMP</option>
+          <option value="ICMPv6">ICMPv6</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">IP</span>
+        <input class="filter-input" type="text" id="filterIP" placeholder="Filtrar por IP..." oninput="applyFilters()">
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Límite</span>
+        <select class="filter-select" id="filterLimit" onchange="applyFilters()">
+          <option value="100">100</option>
+          <option value="250">250</option>
+          <option value="500">500</option>
+          <option value="1000">1000</option>
+        </select>
+      </div>
+      <label class="live-toggle">
+        <button class="toggle-switch on" id="liveToggle" onclick="toggleLive()"></button>
+        <span>AUTO-REFRESH</span>
+      </label>
+    </div>
+
+    <div class="table-wrap" id="tableWrap">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">◈</div>
+        <div class="empty-text">Sin eventos — esperando tráfico interceptado</div>
+      </div>
+      <table id="eventsTable" style="display:none">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Intercept-ID</th>
+            <th>Ses.</th>
+            <th>Dir</th>
+            <th>Ver</th>
+            <th>Proto</th>
+            <th>VLAN</th>
+            <th>MAC Origen</th>
+            <th>IP Origen</th>
+            <th>P.Orig</th>
+            <th>IP Destino</th>
+            <th>P.Dst</th>
+            <th>Bytes</th>
+          </tr>
+        </thead>
+        <tbody id="eventsBody"></tbody>
+      </table>
+    </div>
+
+    <div class="bottom-bar">
+      <span>LIG → LEA · Nokia BNG IP-UDP-SHIM · VPRN 9999 · UDP 11111</span>
+      <span class="pkt-counter" id="rowCount">0 eventos mostrados</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ── State ──────────────────────────────────────────────────────────────────
+  let allEvents    = [];
+  let selectedIID  = null;
+  let liveEnabled  = true;
+  let refreshTimer = null;
+  let lastTotal    = 0;
+
+  function formatLocalClock(date) {
+    return new Intl.DateTimeFormat(undefined, {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+      timeZoneName: 'short'
+    }).format(date);
+  }
+
+  function formatTimestamp(value) {
+    if (!value) return '—';
+
+    const parsed = new Date(value);
+    if (!Number.isNaN(parsed.getTime())) {
+      return new Intl.DateTimeFormat(undefined, {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      }).format(parsed);
+    }
+
+    return value;
+  }
+
+  // ── Clock ──────────────────────────────────────────────────────────────────
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('clock').textContent = formatLocalClock(now);
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // ── Live toggle ────────────────────────────────────────────────────────────
+  function toggleLive() {
+    liveEnabled = !liveEnabled;
+    const btn = document.getElementById('liveToggle');
+    btn.classList.toggle('on', liveEnabled);
+    const dot = document.getElementById('liveDot');
+    dot.classList.toggle('inactive', !liveEnabled);
+    document.getElementById('liveStatus').textContent = liveEnabled ? 'LIVE' : 'PAUSED';
+    if (liveEnabled) startRefresh();
+    else stopRefresh();
+  }
+
+  function startRefresh() {
+    if (refreshTimer) return;
+    refresh();
+    refreshTimer = setInterval(refresh, 2000);
+  }
+
+  function stopRefresh() {
+    if (refreshTimer) { clearInterval(refreshTimer); refreshTimer = null; }
+  }
+
+  // ── Fetch & render ─────────────────────────────────────────────────────────
+  async function refresh() {
+    try {
+      const [statsRes, eventsRes, interceptsRes] = await Promise.all([
+        fetch('/api/stats'),
+        fetch(`/api/events?limit=${document.getElementById('filterLimit').value}`),
+        fetch('/api/intercepts')
+      ]);
+      const stats      = await statsRes.json();
+      const events     = await eventsRes.json();
+      const intercepts = await interceptsRes.json();
+
+      updateStats(stats);
+      allEvents = events;
+      renderIntercepts(intercepts);
+      renderTable();
+    } catch(e) {
+      document.getElementById('liveStatus').textContent = 'ERROR';
+      document.getElementById('liveDot').classList.add('inactive');
+    }
+  }
+
+  function updateStats(s) {
+    document.getElementById('s-total').textContent   = s.total_packets.toLocaleString();
+    document.getElementById('s-ingress').textContent = s.ingress.toLocaleString();
+    document.getElementById('s-egress').textContent  = s.egress.toLocaleString();
+    document.getElementById('s-ipv4').textContent    = s.ipv4.toLocaleString();
+    document.getElementById('s-ipv6').textContent    = s.ipv6.toLocaleString();
+    document.getElementById('s-iids').textContent    = Object.keys(s.intercepts).length;
+  }
+
+  function renderIntercepts(list) {
+    const el = document.getElementById('interceptList');
+    if (!list.length) {
+      el.innerHTML = '<div class="empty-intercepts">Sin interceptaciones activas.<br>Esperando tráfico LI...</div>';
+      return;
+    }
+    el.innerHTML = list.map(i => `
+      <div class="intercept-item ${selectedIID == i.intercept_id ? 'selected' : ''}"
+           onclick="selectIID(${i.intercept_id})">
+        <div class="iid-badge">IID: ${i.intercept_id}</div>
+        <div class="iid-label">Session origin</div>
+        <div class="iid-stats">
+          <div class="iid-stat">
+            <div class="iid-stat-val">${i.packets.toLocaleString()}</div>
+            <div class="iid-stat-lbl">pkts</div>
+          </div>
+          <div class="iid-stat">
+            <div class="iid-stat-val">${formatBytes(i.bytes)}</div>
+            <div class="iid-stat-lbl">bytes</div>
+          </div>
+        </div>
+        <div class="iid-last">LAST: ${formatTimestamp(i.last_seen)}</div>
+      </div>
+    `).join('');
+  }
+
+  function selectIID(iid) {
+    selectedIID = (selectedIID === iid) ? null : iid;
+    renderTable();
+    renderIntercepts(document.querySelectorAll('.intercept-item').length
+      ? Array.from(document.querySelectorAll('.intercept-item')).map(el => ({ // re-render via refresh
+          intercept_id: parseInt(el.querySelector('.iid-badge').textContent.replace('IID: ',''))
+        }))
+      : []);
+    refresh();
+  }
+
+  function applyFilters() { renderTable(); }
+
+  function renderTable() {
+    const dirFilter   = document.getElementById('filterDir').value;
+    const protoFilter = document.getElementById('filterProto').value;
+    const ipFilter    = document.getElementById('filterIP').value.trim().toLowerCase();
+    const limit       = parseInt(document.getElementById('filterLimit').value);
+
+    let data = allEvents;
+
+    if (selectedIID !== null)
+      data = data.filter(e => e.intercept_id === selectedIID);
+    if (dirFilter)
+      data = data.filter(e => e.direction === dirFilter);
+    if (protoFilter)
+      data = data.filter(e => e.proto === protoFilter);
+    if (ipFilter)
+      data = data.filter(e =>
+        (e.src_ip && e.src_ip.toLowerCase().includes(ipFilter)) ||
+        (e.dst_ip && e.dst_ip.toLowerCase().includes(ipFilter))
+      );
+
+    data = data.slice(0, limit);
+
+    const empty = document.getElementById('emptyState');
+    const table = document.getElementById('eventsTable');
+    const tbody = document.getElementById('eventsBody');
+
+    if (!data.length) {
+      empty.style.display = 'flex';
+      table.style.display = 'none';
+      document.getElementById('rowCount').textContent = '0 eventos mostrados';
+      return;
+    }
+
+    empty.style.display = 'none';
+    table.style.display = 'table';
+
+    tbody.innerHTML = data.map(e => {
+      const isV6 = e.ip_version === 'IPv6';
+      const vlan = e.outer_vlan != null
+        ? (e.inner_vlan != null ? `<span class="vlan-badge">${e.outer_vlan}</span>.<span class="vlan-badge">${e.inner_vlan}</span>` : `<span class="vlan-badge">${e.outer_vlan}</span>`)
+        : '—';
+      return `
+        <tr>
+          <td class="td-ts">${formatTimestamp(e.timestamp)}</td>
+          <td class="td-iid">${e.intercept_id}</td>
+          <td class="td-sid">${e.session_id}</td>
+          <td><span class="dir-badge dir-${e.direction.toLowerCase()}">${e.direction}</span></td>
+          <td>${e.ip_version || '—'}</td>
+          <td><span class="proto-badge proto-${e.proto}">${e.proto || '—'}</span></td>
+          <td class="vlan-cell">${vlan}</td>
+          <td class="mac-cell">${e.mac_src || '—'}</td>
+          <td class="ip-cell ${isV6 ? 'ip6' : ''}">${e.src_ip || '—'}</td>
+          <td class="port-cell">${e.src_port != null ? e.src_port : '—'}</td>
+          <td class="ip-cell ${isV6 ? 'ip6' : ''}">${e.dst_ip || '—'}</td>
+          <td class="port-cell">${e.dst_port != null ? e.dst_port : '—'}</td>
+          <td class="size-cell">${e.size}</td>
+        </tr>
+      `;
+    }).join('');
+
+    document.getElementById('rowCount').textContent = `${data.length} eventos mostrados`;
+  }
+
+  async function clearData() {
+    if (!confirm('¿Limpiar todos los datos de interceptación?')) return;
+    await fetch('/api/clear');
+    allEvents = [];
+    selectedIID = null;
+    renderTable();
+    updateStats({ total_packets:0, ingress:0, egress:0, ipv4:0, ipv6:0, intercepts:{} });
+    document.getElementById('interceptList').innerHTML =
+      '<div class="empty-intercepts">Sin interceptaciones activas.<br>Esperando tráfico LI...</div>';
+  }
+
+  function formatBytes(b) {
+    if (b < 1024) return b + 'B';
+    if (b < 1048576) return (b/1024).toFixed(1) + 'KB';
+    return (b/1048576).toFixed(2) + 'MB';
+  }
+
+  // ── Start ──────────────────────────────────────────────────────────────────
+  startRefresh();
+</script>
+</body>
+</html>

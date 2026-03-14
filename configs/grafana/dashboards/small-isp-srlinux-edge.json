@@ -1,0 +1,1151 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Vista ligera y adaptada al Small ISP Lab para SR Linux: OLT por MAC-VRF y carriers por BGP e interfaces.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "content": "## SR Linux Edge Canvas\n`bd-50` IPv6-only | `bd-51` dual-stack | `bd-52` VIP | `bd-srrp` SRRP\n\n`carrier1` primario | `carrier2` secundario",
+        "mode": "markdown"
+      },
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "Cantidad de MAC-VRF activas en la OLT.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#7f1d1d",
+                "value": null
+              },
+              {
+                "color": "#f59e0b",
+                "value": 1
+              },
+              {
+                "color": "#16a34a",
+                "value": 4
+              }
+            ]
+          },
+          "unit": "short",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 3
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum(network_instance_oper_state{source=\"$OLTNode\", network_instance_name=~\"$MacVrf\"})",
+          "instant": true,
+          "legendFormat": "MAC-VRF UP",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "OLT Domains Up",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "Peers BGP SR Linux activos en los carriers seleccionados.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#7f1d1d",
+                "value": null
+              },
+              {
+                "color": "#f59e0b",
+                "value": 1
+              },
+              {
+                "color": "#16a34a",
+                "value": 2
+              }
+            ]
+          },
+          "unit": "short",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 3
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum(network_instance_protocols_bgp_statistics_up_peers{source=~\"$CarrierNode\", network_instance_name=\"default\"})",
+          "instant": true,
+          "legendFormat": "Peers UP",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Carrier BGP Peers Up",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "Rutas activas BGP sumadas entre los carriers seleccionados.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#0f766e"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 3
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum(network_instance_protocols_bgp_statistics_total_active_routes{source=~\"$CarrierNode\", network_instance_name=\"default\"})",
+          "instant": true,
+          "legendFormat": "Active Routes",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Carrier Active Routes",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "Cantidad de paths BGP mantenidos por los carriers.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#1d4ed8"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 3
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum(network_instance_protocols_bgp_statistics_total_paths{source=~\"$CarrierNode\", network_instance_name=\"default\"})",
+          "instant": true,
+          "legendFormat": "Paths",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Carrier Total Paths",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "Inventario en tiempo real de las MAC-VRF de la OLT.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "color-background"
+            },
+            "inspect": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "dark-red",
+                  "index": 1,
+                  "text": "DOWN"
+                },
+                "1": {
+                  "color": "dark-green",
+                  "index": 0,
+                  "text": "UP"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#7f1d1d",
+                "value": null
+              },
+              {
+                "color": "#16a34a",
+                "value": 1
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 7
+      },
+      "id": 6,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "network_instance_oper_state{source=\"$OLTNode\", network_instance_name=~\"$MacVrf\"}",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "OLT MAC-VRF Matrix",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "instance": true,
+              "job": true,
+              "subscription_name": true,
+              "source": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Value": "State",
+              "network_instance_name": "MAC-VRF"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "Tráfico por interfaz física de la OLT hacia BNGs y ONTs.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": true,
+            "drawStyle": "line",
+            "fillOpacity": 16,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "showPoints": "never",
+            "spanNulls": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 7
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "rate(interface_statistics_in_octets{source=\"$OLTNode\", interface_name=~\"ethernet-1/1|ethernet-1/2|ethernet-1/3|ethernet-1/4|ethernet-1/5|ethernet-1/6\"}[$__rate_interval]) * 8",
+          "legendFormat": "{{interface_name}} in",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "-rate(interface_statistics_out_octets{source=\"$OLTNode\", interface_name=~\"ethernet-1/1|ethernet-1/2|ethernet-1/3|ethernet-1/4|ethernet-1/5|ethernet-1/6\"}[$__rate_interval]) * 8",
+          "legendFormat": "{{interface_name}} out",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "OLT Interface Throughput",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "Tráfico agregado por MAC-VRF de la OLT, usando las subinterfaces reales del lab.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": true,
+            "drawStyle": "line",
+            "fillOpacity": 16,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "showPoints": "never",
+            "spanNulls": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 7
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "(sum(rate(interface_subinterface_statistics_in_forwarded_octets{source=\"$OLTNode\", interface_name=~\"ethernet-1/1|ethernet-1/2\", subinterface_index=\"50\"}[$__rate_interval])) + sum(rate(interface_subinterface_statistics_in_forwarded_octets{source=\"$OLTNode\", interface_name=~\"ethernet-1/3|ethernet-1/6\", subinterface_index=\"150\"}[$__rate_interval]))) * 8",
+          "legendFormat": "bd-50 ingress",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "-(sum(rate(interface_subinterface_statistics_out_forwarded_octets{source=\"$OLTNode\", interface_name=~\"ethernet-1/1|ethernet-1/2\", subinterface_index=\"50\"}[$__rate_interval])) + sum(rate(interface_subinterface_statistics_out_forwarded_octets{source=\"$OLTNode\", interface_name=~\"ethernet-1/3|ethernet-1/6\", subinterface_index=\"150\"}[$__rate_interval]))) * 8",
+          "legendFormat": "bd-50 egress",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "(sum(rate(interface_subinterface_statistics_in_forwarded_octets{source=\"$OLTNode\", interface_name=~\"ethernet-1/1|ethernet-1/2\", subinterface_index=\"51\"}[$__rate_interval])) + sum(rate(interface_subinterface_statistics_in_forwarded_octets{source=\"$OLTNode\", interface_name=\"ethernet-1/4\", subinterface_index=\"200\"}[$__rate_interval]))) * 8",
+          "legendFormat": "bd-51 ingress",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "-(sum(rate(interface_subinterface_statistics_out_forwarded_octets{source=\"$OLTNode\", interface_name=~\"ethernet-1/1|ethernet-1/2\", subinterface_index=\"51\"}[$__rate_interval])) + sum(rate(interface_subinterface_statistics_out_forwarded_octets{source=\"$OLTNode\", interface_name=\"ethernet-1/4\", subinterface_index=\"200\"}[$__rate_interval]))) * 8",
+          "legendFormat": "bd-51 egress",
+          "range": true,
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "(sum(rate(interface_subinterface_statistics_in_forwarded_octets{source=\"$OLTNode\", interface_name=~\"ethernet-1/1|ethernet-1/2\", subinterface_index=\"52\"}[$__rate_interval])) + sum(rate(interface_subinterface_statistics_in_forwarded_octets{source=\"$OLTNode\", interface_name=\"ethernet-1/5\", subinterface_index=\"300\"}[$__rate_interval]))) * 8",
+          "legendFormat": "bd-52 ingress",
+          "range": true,
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "-(sum(rate(interface_subinterface_statistics_out_forwarded_octets{source=\"$OLTNode\", interface_name=~\"ethernet-1/1|ethernet-1/2\", subinterface_index=\"52\"}[$__rate_interval])) + sum(rate(interface_subinterface_statistics_out_forwarded_octets{source=\"$OLTNode\", interface_name=\"ethernet-1/5\", subinterface_index=\"300\"}[$__rate_interval]))) * 8",
+          "legendFormat": "bd-52 egress",
+          "range": true,
+          "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(interface_subinterface_statistics_in_forwarded_octets{source=\"$OLTNode\", interface_name=~\"ethernet-1/1|ethernet-1/2\", subinterface_index=\"4094\"}[$__rate_interval])) * 8",
+          "legendFormat": "bd-srrp ingress",
+          "range": true,
+          "refId": "G"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "-sum(rate(interface_subinterface_statistics_out_forwarded_octets{source=\"$OLTNode\", interface_name=~\"ethernet-1/1|ethernet-1/2\", subinterface_index=\"4094\"}[$__rate_interval])) * 8",
+          "legendFormat": "bd-srrp egress",
+          "range": true,
+          "refId": "H"
+        }
+      ],
+      "title": "OLT MAC-VRF Throughput",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "Rutas recibidas y activas por carrier sobre el grupo BGP hacia los BNG.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 12,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "showPoints": "never",
+            "spanNulls": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 15
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "network_instance_protocols_bgp_group_statistics_total_received_routes{source=~\"$CarrierNode\", network_instance_name=\"default\", group_group_name=\"to-bngs\"}",
+          "legendFormat": "{{source}} received",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "network_instance_protocols_bgp_group_statistics_total_active_routes{source=~\"$CarrierNode\", network_instance_name=\"default\", group_group_name=\"to-bngs\"}",
+          "legendFormat": "{{source}} active",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Carrier Route Inventory",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "Resumen BGP de los carriers: peers, paths y prefijos.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 12,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "showPoints": "never",
+            "spanNulls": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 15
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "network_instance_protocols_bgp_statistics_up_peers{source=~\"$CarrierNode\", network_instance_name=\"default\"}",
+          "legendFormat": "{{source}} peers up",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "network_instance_protocols_bgp_statistics_total_paths{source=~\"$CarrierNode\", network_instance_name=\"default\"}",
+          "legendFormat": "{{source}} paths",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "network_instance_protocols_bgp_statistics_total_prefixes{source=~\"$CarrierNode\", network_instance_name=\"default\"}",
+          "legendFormat": "{{source}} prefixes",
+          "range": true,
+          "refId": "C"
+        }
+      ],
+      "title": "Carrier BGP Posture",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "Estado operativo de las interfaces L3 relevantes en los carriers.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "color-background"
+            },
+            "inspect": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "dark-red",
+                  "index": 1,
+                  "text": "DOWN"
+                },
+                "1": {
+                  "color": "dark-green",
+                  "index": 0,
+                  "text": "UP"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#7f1d1d",
+                "value": null
+              },
+              {
+                "color": "#16a34a",
+                "value": 1
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 23
+      },
+      "id": 11,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "interface_oper_state{source=~\"$CarrierNode\", interface_name=~\"ethernet-1/1|ethernet-1/2|ethernet-1/3\"}",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Carrier Interface States",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "instance": true,
+              "job": true,
+              "subscription_name": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Value": "State",
+              "interface_name": "Interface",
+              "source": "Carrier"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "Throughput L3 hacia BNG y hacia Internet en los carriers del lab.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": true,
+            "drawStyle": "line",
+            "fillOpacity": 16,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 4,
+            "showPoints": "never",
+            "spanNulls": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 16,
+        "x": 8,
+        "y": 23
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "rate(interface_statistics_in_octets{source=~\"$CarrierNode\", interface_name=~\"ethernet-1/1|ethernet-1/2|ethernet-1/3\"}[$__rate_interval]) * 8",
+          "legendFormat": "{{source}} {{interface_name}} in",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "-rate(interface_statistics_out_octets{source=~\"$CarrierNode\", interface_name=~\"ethernet-1/1|ethernet-1/2|ethernet-1/3\"}[$__rate_interval]) * 8",
+          "legendFormat": "{{source}} {{interface_name}} out",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Carrier Interface Throughput",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": [
+    "small-isp",
+    "srlinux",
+    "olt",
+    "carrier",
+    "bgp"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "olt",
+          "value": "olt"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "definition": "label_values(network_instance_oper_state{network_instance_name=~\"bd-50|bd-51|bd-52|bd-srrp\"}, source)",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "OLTNode",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(network_instance_oper_state{network_instance_name=~\"bd-50|bd-51|bd-52|bd-srrp\"}, source)",
+          "refId": "PrometheusVariableQueryEditor-OLT"
+        },
+        "refresh": 1,
+        "regex": "/(olt)/",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "carrier1|carrier2",
+        "current": {
+          "selected": true,
+          "text": [
+            "carrier1",
+            "carrier2"
+          ],
+          "value": [
+            "carrier1",
+            "carrier2"
+          ]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "definition": "label_values(network_instance_protocols_bgp_statistics_up_peers{network_instance_name=\"default\"}, source)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Carrier",
+        "multi": true,
+        "name": "CarrierNode",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(network_instance_protocols_bgp_statistics_up_peers{network_instance_name=\"default\"}, source)",
+          "refId": "PrometheusVariableQueryEditor-Carrier"
+        },
+        "refresh": 1,
+        "regex": "/(carrier1|carrier2)/",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": "bd-50|bd-51|bd-52|bd-srrp",
+        "current": {
+          "selected": true,
+          "text": [
+            "bd-50",
+            "bd-51",
+            "bd-52",
+            "bd-srrp"
+          ],
+          "value": [
+            "bd-50",
+            "bd-51",
+            "bd-52",
+            "bd-srrp"
+          ]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "definition": "label_values(network_instance_oper_state{source=\"$OLTNode\", network_instance_name=~\"bd-50|bd-51|bd-52|bd-srrp\"}, network_instance_name)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "MAC-VRF",
+        "multi": true,
+        "name": "MacVrf",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(network_instance_oper_state{source=\"$OLTNode\", network_instance_name=~\"bd-50|bd-51|bd-52|bd-srrp\"}, network_instance_name)",
+          "refId": "PrometheusVariableQueryEditor-MacVrf"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Small ISP SR Linux Edge",
+  "uid": "small-isp-srl-edge",
+  "version": 1,
+  "weekStart": ""
+}
