@@ -109,7 +109,7 @@ topology:
     ont1:
       kind: linux
       mgmt-ipv4: 10.99.1.5
-      image: ghcr.io/abelperezr/ont-ds:0.4
+      image: ghcr.io/abelperezr/ont-ds:0.3
       env:
         CONNECTION_TYPE: ipoe
         IFPHY: eth1
@@ -139,7 +139,7 @@ topology:
     ont2:
       kind: linux
       mgmt-ipv4: 10.99.1.6
-      image: ghcr.io/abelperezr/ont-ds:0.4
+      image: ghcr.io/abelperezr/ont-ds:0.3
       env:
         CONNECTION_TYPE: pppoe
         WAN1_MODE: ipv6
